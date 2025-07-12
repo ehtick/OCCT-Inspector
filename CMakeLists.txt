@@ -4,7 +4,7 @@
 # For canceling of applying new policies use:
 # cmake_policy(PUSH) before `cmake_minimum_required`
 # and cmake_policy(POP) after.
-cmake_minimum_required (VERSION 3.1 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.10 FATAL_ERROR)
 
 set (ADDITIONAL_INLCUDE_DIR_DESCR "Additional directory to be added in the projects include section")
 if (NOT DEFINED ADDITIONAL_INLCUDE_DIR)
@@ -61,6 +61,26 @@ else()
   unset (BUILD_SHARED_LIBS)
   unset (BUILD_SHARED_LIBRARY_NAME_POSTFIX)
 endif()
+
+# set using C++ standard
+set (BUILD_CPP_STANDARD "C++17" CACHE STRING "Select using c++ standard.")
+set_property(CACHE BUILD_CPP_STANDARD PROPERTY STRINGS "C++17" "C++20" "C++23" "C++26")
+
+# Set desired C++ standard
+if ("${BUILD_CPP_STANDARD}" STREQUAL "C++17")
+  set (CMAKE_CXX_STANDARD 17)
+elseif ("${BUILD_CPP_STANDARD}" STREQUAL "C++20")
+  set (CMAKE_CXX_STANDARD 20)
+elseif ("${BUILD_CPP_STANDARD}" STREQUAL "C++23")
+  set (CMAKE_CXX_STANDARD 23)
+elseif ("${BUILD_CPP_STANDARD}" STREQUAL "C++26")
+  set (CMAKE_CXX_STANDARD 26)
+else()
+  message (WARNING "C++ standard is not set or invalid. Set to C++17.")
+  set (CMAKE_CXX_STANDARD 17)
+endif()
+
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # the name of the project
 project (Inspector)
